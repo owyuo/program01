@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+        }
+
+        #app {
+            position: absolute;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        class Rc {
+
+            constructor() {
+                //给body绑定事件
+                document.body.addEventListener('click', this.clickFn.bind(this))
+            }
+            //获取鼠标坐标
+            clickFn(event) {
+                let x = event.clientX;
+                let y = event.clientY;
+                let wh = this.rand(80, 110)
+                //这是body的回调函数，所以此处this指向body
+                //故要在调用的地方加上bind(this)使得新函数指向实例化的对象
+                this.createEle('div', {
+                    top: y + 'px',
+                    left: x + 'px',
+                    background: this.color(),
+                    width: wh + 'px',
+                    height: wh + 'px'
+                })
+            }
+
+            //节点对象的创建
+            createEle(tName, styleObj) {
+                let newEle = document.createElement(tName);
+                //将样式合并到style上
+                Object.assign(newEle.style, styleObj);
+                newEle.id = 'app';
+                document.body.appendChild(newEle);
+            }
+
+            //随机数生成
+            rand(max, min) {
+                return parseInt(Math.random() * (max - min) + min);
+                
+            }
+            //随机颜色
+            color() {
+                let c = '#'
+                for (let i = 0; i < 6; i++) {
+                    c += this.rand(0, 15).toString(16)
+                }
+                // console.log(c);
+                return c;
+            }
+
+        }
+        let rc = new Rc;
+        rc.color();
+    </script>
+</body>
+
+</html>
